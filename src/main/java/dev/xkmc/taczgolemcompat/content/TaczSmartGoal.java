@@ -47,10 +47,16 @@ public class TaczSmartGoal<T extends Mob> extends SmartRangedAttackGoal<T> {
 
 	public void start() {
 		super.start();
-		this.gunState = UNCHARGED;
 		var operator = IGunOperator.fromLivingEntity(mob);
-		operator.draw(mob::getMainHandItem);
-		operator.getDataHolder().drawTimestamp = System.currentTimeMillis() - 10000L;
+		var data = operator.getDataHolder();
+		// draw() calls initialData(), which wipes any reload in progress, so resume instead of redrawing
+		if (data.reloadTimestamp != -1L && data.reloadStateType.isReloading()) {
+			this.gunState = CHARGING;
+		} else {
+			operator.draw(mob::getMainHandItem);
+			data.drawTimestamp = System.currentTimeMillis() - 10000L;
+			this.gunState = UNCHARGED;
+		}
 	}
 
 	public void stop() {
