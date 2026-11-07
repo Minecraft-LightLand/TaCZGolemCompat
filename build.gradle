@@ -228,21 +228,10 @@ dependencies {
     compileOnly fg.deobf("curse.maven:architectury-api-419699:5137938")
 
     compileOnly fg.deobf("curse.maven:pillagers-gun-948255:6875446")
-    implementation fg.deobf("curse.maven:timeless-and-classics-zero-1028108:6654541")
+//    implementation fg.deobf("curse.maven:timeless-and-classics-zero-1028108:6654541") // 1.1.8
+    implementation fg.deobf("curse.maven:timeless-and-classics-zero-1028108:9454481") // 1.2.0
 
 
-}
-
-tasks.register('publishCurseForge', TaskPublishCurseForge) {
-    apiToken = secrets.get("curseforge_token")
-    def mainFile = upload(project.curseforge_project, new File("./build/libs/${modid}-${ll_version}.jar"))
-    mainFile.changelog = new File('./changelog.txt').text.split("\n\n\n")[0]
-    mainFile.addEnvironment("Client", "Server")
-    mainFile.addGameVersion("1.20.1")
-    mainFile.addModLoader("Forge", "NeoForge")
-    mainFile.addRequirement("l2library", "modulargolems", "timeless-and-classics-zero")
-    mainFile.releaseType = "release"
-    disableVersionDetection()
 }
 
 modrinth {
